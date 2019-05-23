@@ -1,0 +1,27 @@
+report = new com.openbravo.pos.reports.PanelReportBean();
+
+report.setTitleKey("Menu.Ventasclienteconcentrado");
+report.setReport("/com/openbravo/reports/ventasclienteconcentrado");
+report.setResourceBundle("com/openbravo/reports/ventasclienteconcentrado_messages");
+
+report.setSentence("SELECT TICKETS.CUSTOMER, TICKETS.TARJETA, TICKETS.NOMBRE, TICKETS.EMPRESA, SUM(TICKETLINES.UNITS*TICKETLINES.PRICE) AS TOTAL FROM TICKETS,RECEIPTS,TICKETLINES WHERE TICKETS.CUSTOMER IS NOT NULL AND TICKETLINES.TICKET = TICKETS.ID AND TICKETS.ID = RECEIPTS.ID AND ?(QBF_FILTER) GROUP BY TICKETS.CUSTOMER, TICKETS.TARJETA, TICKETS.NOMBRE, TICKETS.EMPRESA");
+
+report.addParameter("TICKETS.CUSTOMER");
+report.addQBFFilter(new com.openbravo.pos.reports.JParamsText("Numero de empleado"));
+
+report.addParameter("TICKETS.TARJETA");
+report.addQBFFilter(new com.openbravo.pos.reports.JParamsText("Numero de tarjeta"));
+
+report.addParameter("TICKETS.EMPRESA");
+report.addQBFFilter(new com.openbravo.pos.reports.JParamsComboCompany("Empresa"));
+
+report.addParameter("RECEIPTS.DATENEW");
+report.addParameter("RECEIPTS.DATENEW");
+report.addQBFFilter(new com.openbravo.pos.reports.JParamsDatesInterval());
+
+report.addField("CUSTOMER", com.openbravo.data.loader.Datas.STRING);
+report.addField("TARJETA", com.openbravo.data.loader.Datas.STRING);
+report.addField("NOMBRE", com.openbravo.data.loader.Datas.STRING);
+report.addField("EMPRESA", com.openbravo.data.loader.Datas.STRING);
+report.addField("TOTAL", com.openbravo.data.loader.Datas.DOUBLE);
+report;
