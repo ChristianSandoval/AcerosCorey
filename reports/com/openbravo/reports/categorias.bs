@@ -1,0 +1,22 @@
+report = new com.openbravo.pos.reports.PanelReportBean();
+
+report.setTitleKey("Menu.Categorias");
+report.setReport("/com/openbravo/reports/categorias");
+report.setResourceBundle("com/openbravo/reports/ventas_messages");
+
+report.setSentence("SELECT TICKETS.CUSTOMER,TICKETS.TARJETA,TICKETS.NOMBRE,TICKETS.EMPRESA,CASE WHEN PRODUCTS.CATEGORY='b44aeebe-8910-494d-ae1e-26b39ad1d601' THEN 'MENU ADMINISTRATIVO' WHEN PRODUCTS.CATEGORY='a7766078-164a-4676-b6ac-00eabad1464c' THEN 'TIENDITA' ELSE 'MENU OPERATIVO' END AS CATEGORIA, "
++"SUM(TICKETLINES.UNITS * TICKETLINES.PRICE) AS TOTAL FROM TICKETS,RECEIPTS,TICKETLINES,PRODUCTS WHERE PRODUCTS.ID=TICKETLINES.PRODUCT AND TICKETS.CUSTOMER IS NOT NULL AND TICKETLINES.TICKET = TICKETS.ID AND TICKETS.ID = RECEIPTS.ID "
++"AND TICKETS.EMPRESA IN ('STOQ SERVICIOS TECNICOS COREY, S.A. C.V.','STO SERVICIOS INTEGRALES COREY, S.A. DE C.V.') AND PRODUCTS.CATEGORY IN ('b44aeebe-8910-494d-ae1e-26b39ad1d601','a7766078-164a-4676-b6ac-00eabad1464c') "
++"AND ?(QBF_FILTER) GROUP BY TICKETS.CUSTOMER , TICKETS.TARJETA , TICKETS.NOMBRE , TICKETS.EMPRESA,PRODUCTS.CATEGORY ORDER BY TICKETS.CUSTOMER");
+
+report.addParameter("RECEIPTS.DATENEW");
+report.addParameter("RECEIPTS.DATENEW");
+report.addQBFFilter(new com.openbravo.pos.reports.JParamsDatesInterval());
+
+report.addField("CUSTOMER", com.openbravo.data.loader.Datas.STRING);
+report.addField("TARJETA", com.openbravo.data.loader.Datas.STRING);
+report.addField("NOMBRE", com.openbravo.data.loader.Datas.STRING);
+report.addField("EMPRESA", com.openbravo.data.loader.Datas.STRING);
+report.addField("CATEGORIA", com.openbravo.data.loader.Datas.STRING);
+report.addField("TOTAL", com.openbravo.data.loader.Datas.DOUBLE);
+report;
